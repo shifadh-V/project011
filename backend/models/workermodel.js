@@ -12,6 +12,14 @@ const workerschema=new mongoose.Schema({
         type:String,
         required:true
     },
+    workname:{
+        type:String,
+        required:true
+    },
+    experience:{
+        type:String,
+        required:true
+    },
     password:{
         type:String,
         required:true
@@ -19,4 +27,4 @@ const workerschema=new mongoose.Schema({
 },{timestamps:true})
 
 const Worker=mongoose.model('worker',workerschema)
-module.exports=Worker
+module.exports = Worker

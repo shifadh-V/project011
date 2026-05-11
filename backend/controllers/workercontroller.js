@@ -1,8 +1,9 @@
 const Worker=require('../models/workermodel')
 const bcrypt = require('bcrypt')
+const jwt= require('jsonwebtoken')
 
 const createworker=async (req,res) =>{
-   const {fullname,email,mobileno,password}=req.body
+   const {fullname,email,mobileno,workname,experience,password}=req.body
    try {
         const wrkr = await Worker.findOne({email})
         if(wrkr){
@@ -13,6 +14,8 @@ const createworker=async (req,res) =>{
             fullname,
             email,
             mobileno,
+            workname,
+            experience,
             password:trupass
          })
          await newdata.save()
@@ -23,4 +26,23 @@ const createworker=async (req,res) =>{
    }
 }
 
-module.exports={createworker}
+const login = async(req,res)=>{
+   const {email,password}=req.body
+   try {
+      const worker=await Worker.findOne({email})
+      if(!worker){
+         return res.status(404).json({msg:"Worker Not Registerd"})
+      }
+      const matchpassword=await bcrypt.compare(password,worker.password)
+      if(!matchpassword){
+         return res.status(404).json({msg:"Invalid Password "})
+      }
+      const token = jwt.sign({id:worker._id},process.env.SECRET_KEY,{expiresIn:'1h'})
+      res.status(200).json({msg:"Login Successful",token:token})
+   } catch (error) {
+      console.log(error)
+      return res.status(500).json({msg:"Server Error"})
+   }
+}
+
+module.exports={login, createworker}
