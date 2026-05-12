@@ -26,6 +26,8 @@ const createworker=async (req,res) =>{
    }
 }
 
+//login
+
 const login = async(req,res)=>{
    const {email,password}=req.body
    try {
@@ -45,4 +47,31 @@ const login = async(req,res)=>{
    }
 }
 
-module.exports={login, createworker}
+//dataread
+
+const getdata = async (req,res)=>{
+   try {
+      const datas = await Worker.find().sort({createdAt:-1})
+      res.status(200).json({msg:"All Posts",data:datas})
+   } catch (error) {
+      res.status(500).json({msg:"Server Error"})
+   }
+}
+
+//data update
+
+const updata=async(req,res)=>{
+   try {
+      const {id}= req.params
+      const updata=await Worker.findByIdAndUpdate(id,req.body,{new:true})
+
+      if(!updata){
+         res.status(404).json({msg:"Datas Not Found"})
+      }
+   res.status(200).json({msg:"Datas Updated Successfully",updated:updata})
+   } catch (error) {
+      res.status(500).json({msg:"Server Error"})
+   }
+} 
+
+module.exports={login,createworker,getdata,updata}
