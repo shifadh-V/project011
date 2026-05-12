@@ -7,5 +7,6 @@ router.post('/createworker', workercontroller.createworker)
 router.post('/loginworker', workercontroller.login)
 router.get('/readdata',workercontroller.getdata)
 router.put('/update/:id',workercontroller.updata)
+router.delete('/delete/:id',workercontroller.deldata)
 
 module.exports = router;

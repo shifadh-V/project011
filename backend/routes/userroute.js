@@ -7,6 +7,7 @@ const User = require('../models/usermodel')
 router.post('/createuser',usercontroller.createuser)
 router.post('/loginuser',usercontroller.login)
 router.get('/dataread',usercontroller.readdata)
-router.put('/update',usercontroller.updata)
+router.put('/update/:id',usercontroller.updata)
+router.delete('/delete/:id',usercontroller.deldata)
 
 module.exports=router;

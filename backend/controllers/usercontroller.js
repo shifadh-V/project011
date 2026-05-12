@@ -71,4 +71,21 @@ const updata=async(req,res)=>{
         res.status(500).json({msg:"Server Error"})
     }
 }
-module.exports={createuser,login,readdata,updata}
+
+//delete data
+
+const deldata=async(req,res)=>{
+    try {
+        const {id}=req.params
+        const deldata=await User.findByIdAndDelete(id,req.body,{new:true})
+
+        if(!deldata){
+            res.status(404).json({msg:"Data Not Found"})
+        }
+        res.status(200).json({msg:"Data Deleted Successfully",deleted:deldata})
+    } catch (error) {
+        res.status(500).json({msg:"Server Error"})
+    }
+}
+
+module.exports={createuser,login,readdata,updata,deldata}
