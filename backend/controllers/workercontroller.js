@@ -26,6 +26,8 @@ const createworker=async (req,res) =>{
    }
 }
 
+//login
+
 const login = async(req,res)=>{
    const {email,password}=req.body
    try {
@@ -35,12 +37,11 @@ const login = async(req,res)=>{
       }
       const matchpassword=await bcrypt.compare(password,worker.password)
       if(!matchpassword){
-         return res.status(404).json({msg:"Invalid Password "})
+         return res.status(400).json({msg:"Invalid Password "})
       }
       const token = jwt.sign({id:worker._id},process.env.SECRET_KEY,{expiresIn:'1h'})
       res.status(200).json({msg:"Login Successful",token:token})
    } catch (error) {
-      console.log(error)
       return res.status(500).json({msg:"Server Error"})
    }
 }
